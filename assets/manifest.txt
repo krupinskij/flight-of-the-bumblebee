@@ -1,0 +1,2 @@
+original OBJ file: ball2.obj
+part1.json > alias: Sphere_Sphere_None
