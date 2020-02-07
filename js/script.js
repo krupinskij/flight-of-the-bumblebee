@@ -20,10 +20,27 @@ let normals;
 
 let angle = 0;
 
+let shaders = ["phong/shader-fs", "phong/shader-vs"];
+
+document.addEventListener('keydown', event => {
+    switch(event.keyCode){
+        case 49: {
+            shaders = ["phong/shader-fs", "phong/shader-vs"];
+            runWebGLApp();
+            break;
+        }
+        case 50: {
+            shaders = ["gouraud/shader-fs", "gouraud/shader-vs"];
+            runWebGLApp();
+            break;
+        }
+    }
+})
+
 
 function initProgram() {
-    const fragmentShader = utils.getShader(gl, "shader-fs");
-    const vertexShader = utils.getShader(gl, "shader-vs");
+    const fragmentShader = utils.getShader(gl, shaders[0]);
+    const vertexShader = utils.getShader(gl, shaders[1]);
     prg = gl.createProgram();
     gl.attachShader(prg, vertexShader);
     gl.attachShader(prg, fragmentShader);
@@ -63,7 +80,7 @@ function initLights(){
     gl.uniform4fv(prg.uLightSpecular,  [1.0,1.0,1.0,1.0]);
     
     gl.uniform4fv(prg.uMaterialAmbient, [1.0,1.0,1.0,1.0]);
-    gl.uniform4fv(prg.uMaterialDiffuse, [1.0,0.8,0.6,1.0]);
+    gl.uniform4fv(prg.uMaterialDiffuse, [1.0,0.9,0.4,1.0]);
     gl.uniform4fv(prg.uMaterialSpecular,[1.0,1.0,1.0,1.0]);
     gl.uniform1f(prg.uShininess, 10.0);
 }
