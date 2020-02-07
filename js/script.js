@@ -26,11 +26,13 @@ document.addEventListener('keydown', event => {
     switch(event.keyCode){
         case 49: {
             shaders = ["phong/shader-fs", "phong/shader-vs"];
+            gl.deleteProgram(prg);
             runWebGLApp();
             break;
         }
         case 50: {
             shaders = ["gouraud/shader-fs", "gouraud/shader-vs"];
+            gl.deleteProgram(prg);
             runWebGLApp();
             break;
         }
@@ -39,6 +41,11 @@ document.addEventListener('keydown', event => {
 
 
 function initProgram() {
+    
+    
+    resize(gl.canvas);
+    gl.viewport(0, 0, c_width, c_height);
+
     const fragmentShader = utils.getShader(gl, shaders[0]);
     const vertexShader = utils.getShader(gl, shaders[1]);
     prg = gl.createProgram();
@@ -116,6 +123,9 @@ function handleLoadedModel(payload) {
     renderLoop();
 }
 function drawScene() {
+    //resize(gl.canvas);
+    //gl.viewport(0, 0, c_width, c_height);
+
     gl.clearColor(...clearColor);
     gl.clearDepth(100.0);
     gl.enable(gl.DEPTH_TEST);
@@ -184,11 +194,12 @@ function renderLoop() {
 
 function runWebGLApp() {
     gl = utils.getGLContext("canvas-element-id");
-    loadModel("model/part1.json")
+    loadModel("model/part1.json");
 
     initProgram();
     initLights();
-    
 }
 
 runWebGLApp();
+
+setTimeout(runWebGLApp, 0);
