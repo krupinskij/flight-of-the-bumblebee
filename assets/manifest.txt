@@ -1,2 +1,2 @@
-original OBJ file: ball2.obj
-part1.json > alias: Sphere_Sphere_None
+original OBJ file: grass.obj
+part1.json > alias: Plane_Plane_None

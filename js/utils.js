@@ -1,4 +1,4 @@
-class utilsObject {
+class Utils {
 
 	getGLContext = function (id) {
 
@@ -127,4 +127,4 @@ class utilsObject {
 	}
 }
 
-const utils = new utilsObject();
+const utils = new Utils();
