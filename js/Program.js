@@ -15,11 +15,12 @@ class Program {
     }
 
     init() {
+        console.log(webGLApp.shaders[0])
         resize(this.gl.canvas);
         this.gl.viewport(0, 0, c_width, c_height);
 
-        this.fragmentShader = utils.getShader(this.gl, "phong/shader-fs");
-        this.vertexShader = utils.getShader(this.gl, "phong/shader-vs");
+        this.fragmentShader = utils.getShader(this.gl, webGLApp.shaders[0]);
+        this.vertexShader = utils.getShader(this.gl, webGLApp.shaders[1]);
 
         this.prg = this.gl.createProgram();
 
@@ -88,8 +89,6 @@ class Program {
         
         this.gl.uniformMatrix4fv(this.prg.uNMatrix, false, this.nMatrix);
         
-        console.log(scene.objects)
-        
         try{
             for (const model of scene.objects){
 
@@ -129,6 +128,17 @@ class Program {
         catch(err){
             alert(err);
         }
+    }
+
+    changeShaders() {
+
+        this.gl.deleteProgram(this.prg);
+        this.gl.deleteShader(this.fragmentShader);
+        this.gl.deleteShader(this.vertexShader);
+
+        this.init();
+        this.initLights();
+        this.draw();
     }
 }
 
