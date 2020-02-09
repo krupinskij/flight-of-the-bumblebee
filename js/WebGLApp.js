@@ -37,17 +37,21 @@ document.addEventListener('keydown', event => {
             break;
         case 37:
             bumblebee.angle +=0.05;
+            bumblebee.upDateObserver();
             break;
         case 39:
             bumblebee.angle -=0.05;
+            bumblebee.upDateObserver();
             break;
          case 38:
             bumblebee.moveX -= Math.sin(bumblebee.angle) * 0.1;
             bumblebee.moveZ -= Math.cos(bumblebee.angle) * 0.1;
+            bumblebee.upDateObserver();
              break;
          case 40:
             bumblebee.moveX += Math.sin(bumblebee.angle) * 0.1;
             bumblebee.moveZ += Math.cos(bumblebee.angle) * 0.1;
+            bumblebee.upDateObserver();
              break;
 
         case 81:

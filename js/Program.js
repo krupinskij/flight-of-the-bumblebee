@@ -110,13 +110,13 @@ class Program {
 
                 switch(camera.type) {
                     case camera.CAMERA_FOLLOWING:
-                        camera.lookAt(viewMatrix, bumblebee.position.map(p => p+5), bumblebee.position, [1,0,1]);
+                        camera.lookAt(viewMatrix, bumblebee.observer, bumblebee.position, bumblebee.upVector);
                         break;
                     case camera.CAMERA_TRACKING:
-                        camera.lookAt(viewMatrix, [10,10,10], bumblebee.position, [1,0,1]);
+                        camera.lookAt(viewMatrix, [20,20,0], bumblebee.position, [1,0,0]);
                         break;
                     case camera.CAMERA_STATIC:
-                        camera.lookAt(viewMatrix, [10,10,10], [0,0,0], [1,0,1]);
+                        camera.lookAt(viewMatrix, [20,20,0], [0,0,0], [1, 0,0]);
                         break;
                 }
 
