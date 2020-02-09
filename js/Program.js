@@ -14,12 +14,16 @@ class Program {
         this.angle = 0;
         this.moveX = 0;
         this.moveZ = 0;
+
+        this.c_width = 0;
+        this.c_height = 0;
+
     }
 
     init() {
         console.log(webGLApp.shaders[0])
         resize(this.gl.canvas);
-        this.gl.viewport(0, 0, c_width, c_height);
+        this.gl.viewport(0, 0, this.c_width, this.c_height);
 
         this.fragmentShader = utils.getShader(this.gl, webGLApp.shaders[0]);
         this.vertexShader = utils.getShader(this.gl, webGLApp.shaders[1]);
@@ -67,7 +71,7 @@ class Program {
         this.gl.clearDepth(100.0);
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.depthFunc(this.gl.LEQUAL);
-        this.gl.viewport(0, 0, c_width, c_height);
+        this.gl.viewport(0, 0, this.c_width, this.c_height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     
         
@@ -82,7 +86,7 @@ class Program {
                 mat4.identity(viewMatrix);
                 mat4.identity(projectionMatrix);
 
-                mat4.perspective(45, c_width / c_height, 1, 100.0, projectionMatrix);
+                mat4.perspective(45, this.c_width / this.c_height, 1, 100.0, projectionMatrix);
                 
 
                 mat4.translate(viewMatrix, [0,0,-10])

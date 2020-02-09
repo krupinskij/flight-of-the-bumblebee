@@ -10,8 +10,8 @@ class Utils {
 			return null;
 		}
 		else {
-			c_width = canvas.width;
-			c_height = canvas.height;
+			program.c_width = canvas.width;
+			program.c_height = canvas.height;
 		}
 
 		var names = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"];
