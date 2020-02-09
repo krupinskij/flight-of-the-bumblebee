@@ -96,27 +96,19 @@ class Program {
                     mat4.translate(modelMatrix, [0,0,-1])
                 }
 
-                if(model.partname==="right-eye" || model.partname==="left-eye") {
-                    this.gl.uniform4fv(this.prg.uMaterialDiffuse, [1.0,1.0,1.0,1.0]);
-                } else if(model.partname==="head") {
-                    this.gl.uniform4fv(this.prg.uMaterialDiffuse, [0.3,0.3,0.3,0.0]);
-                } else if(model.partname==="belly") {
-                    this.gl.uniform4fv(this.prg.uMaterialDiffuse, [1.0,0.8,0.0,0.0]);
-                } else if(model.partname==="grass") {
-                    this.gl.uniform4fv(this.prg.uMaterialDiffuse, [0.0,0.6,0.1,1.0]);
-                } else {
-                    this.gl.uniform4fv(this.prg.uMaterialDiffuse, [0.0,0.0,0.0,1.0]);
-                }
+                
+                this.gl.uniform4fv(this.prg.uMaterialDiffuse, model.color);
+                
 
                 switch(camera.type) {
                     case camera.CAMERA_FOLLOWING:
                         camera.lookAt(viewMatrix, bumblebee.observer, bumblebee.position, bumblebee.upVector);
                         break;
                     case camera.CAMERA_TRACKING:
-                        camera.lookAt(viewMatrix, [20,20,0], bumblebee.position, [1,0,0]);
+                        camera.lookAt(viewMatrix, [40,40,0], bumblebee.position, [0,-1,0]);
                         break;
                     case camera.CAMERA_STATIC:
-                        camera.lookAt(viewMatrix, [20,20,0], [0,0,0], [1, 0,0]);
+                        camera.lookAt(viewMatrix, [50,50,0], [0,0,0], [0, -1,0]);
                         break;
                 }
 
