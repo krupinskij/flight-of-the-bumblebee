@@ -15,6 +15,8 @@ class Program {
         this.moveX = 0;
         this.moveZ = 0;
 
+        this.bumblebeePosition = [0,0,0];
+
         this.c_width = 0;
         this.c_height = 0;
 
@@ -43,6 +45,7 @@ class Program {
         this.prg.aVertexPosition = this.gl.getAttribLocation(this.prg, "aVertexPosition");
         this.prg.aVertexNormal = this.gl.getAttribLocation(this.prg, "aVertexNormal");
 
+        this.prg.uModelMatrix = this.gl.getUniformLocation(this.prg, "uModelMatrix");
         this.prg.uViewMatrix = this.gl.getUniformLocation(this.prg, "uViewMatrix");
         this.prg.uProjectionMatrix = this.gl.getUniformLocation(this.prg, "uProjectionMatrix");
         this.prg.uNormalMatrix = this.gl.getUniformLocation(this.prg, "uNormalMatrix");
@@ -79,30 +82,48 @@ class Program {
         try{
             for (const model of scene.objects){
 
+                const modelMatrix = mat4.create();
                 const viewMatrix = mat4.create();
                 const projectionMatrix = mat4.create();
                 const normalMatrix = mat4.create();
     
+                mat4.identity(modelMatrix);
                 mat4.identity(viewMatrix);
                 mat4.identity(projectionMatrix);
 
                 mat4.perspective(45, this.c_width / this.c_height, 1, 100.0, projectionMatrix);
                 
 
-                mat4.translate(viewMatrix, [0,0,-10])
-        
+
                 if(model.alias==="bumblebee") {
-                    mat4.translate(viewMatrix, [program.moveX,0,program.moveZ]);
-                    mat4.rotateY(viewMatrix, program.angle);
+                    mat4.translate(modelMatrix, [program.moveX,0,program.moveZ]);
+                    mat4.rotateY(modelMatrix, program.angle);
+                    program.bumblebeePosition = [modelMatrix[12], modelMatrix[13], modelMatrix[14]];
                 } else {
-                    mat4.translate(viewMatrix, [0,0,-1])
+                    mat4.translate(modelMatrix, [0,0,-1])
+
+                }
+                switch(camera.type) {
+                    case camera.CAMERA_FOLLOWING:
+                        camera.lookAt(viewMatrix, program.bumblebeePosition.map(p => p+5), program.bumblebeePosition, [1,0,1]);
+                        break;
+                    case camera.CAMERA_TRACKING:
+                        camera.lookAt(viewMatrix, [10,10,10], program.bumblebeePosition, [1,0,1]);
+                        break;
+                    case camera.CAMERA_STATIC:
+                        camera.lookAt(viewMatrix, [10,10,10], [0,0,0], [1,0,1]);
+                        break;
                 }
 
+                
+
+                this.gl.uniformMatrix4fv(this.prg.uModelMatrix, false, modelMatrix);
                 this.gl.uniformMatrix4fv(this.prg.uViewMatrix, false, viewMatrix);
                 this.gl.uniformMatrix4fv(this.prg.uProjectionMatrix, false, projectionMatrix);
 
                 
                 mat4.set(viewMatrix, normalMatrix);
+                mat4.multiply(normalMatrix, modelMatrix);
                 mat4.inverse(normalMatrix);
                 mat4.transpose(normalMatrix);
                 

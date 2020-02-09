@@ -9,6 +9,7 @@
     <script type='text/javascript' src='js/helpers/gl-matrix-min.js'></script>
     <script type='text/javascript' src='js/helpers/canvas.js'></script>
 
+    <script type='text/javascript' src='js/Camera.js'></script>
     <script type='text/javascript' src='js/Utils.js'></script>
     <script type='text/javascript' src='js/Scene.js'></script>
     <script type='text/javascript' src='js/Program.js'></script>
@@ -68,6 +69,7 @@
         attribute vec3 aVertexPosition;
         attribute vec3 aVertexNormal;        
 
+        uniform mat4 uModelMatrix;
         uniform mat4 uViewMatrix;
         uniform mat4 uProjectionMatrix;
         uniform mat4 uNormalMatrix;
@@ -77,12 +79,12 @@
         
         void main(void) {
 
-             vec4 vertex = uViewMatrix  * vec4(aVertexPosition, 1.0);
+             vec4 vertex = uViewMatrix  * uModelMatrix * vec4(aVertexPosition, 1.0);
              
              n = vec3(uNormalMatrix * vec4(aVertexNormal, 1.0));
              v = vec3(vertex.xyz);
              
-             gl_Position = uProjectionMatrix * uViewMatrix * vec4(aVertexPosition, 1.0);
+             gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
         }
         </script>
 
@@ -103,6 +105,7 @@
         attribute vec3 aVertexPosition;
         attribute vec3 aVertexNormal;
         
+        uniform mat4 uModelMatrix;
         uniform mat4 uViewMatrix;
         uniform mat4 uProjectionMatrix;
         uniform mat4 uNormalMatrix;
@@ -118,7 +121,7 @@
  
         void main(void) {
         
-            vec4 vertex = uViewMatrix * vec4(aVertexPosition, 1.0);
+            vec4 vertex = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
             vec3 N = vec3(uNormalMatrix * vec4(aVertexNormal, 1.0));
             vec3 L = normalize(uLightDirection - vec3(vertex)); 
             

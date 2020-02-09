@@ -46,5 +46,15 @@ document.addEventListener('keydown', event => {
              program.moveX += Math.sin(program.angle) * 0.1;
              program.moveZ += Math.cos(program.angle) * 0.1;
              break;
+
+        case 81:
+            camera.setType(camera.CAMERA_FOLLOWING);
+            break;
+        case 87:
+            camera.setType(camera.CAMERA_TRACKING);
+            break;
+        case 69:
+            camera.setType(camera.CAMERA_STATIC);
+            break;
     }   
 })
