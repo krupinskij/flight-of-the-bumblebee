@@ -11,12 +11,6 @@ class Program {
 
         this.animationFrame = null;
 
-        this.angle = 0;
-        this.moveX = 0;
-        this.moveZ = 0;
-
-        this.bumblebeePosition = [0,0,0];
-
         this.c_width = 0;
         this.c_height = 0;
 
@@ -95,9 +89,9 @@ class Program {
 
 
                 if(model.alias==="bumblebee") {
-                    mat4.translate(modelMatrix, [program.moveX,0,program.moveZ]);
-                    mat4.rotateY(modelMatrix, program.angle);
-                    program.bumblebeePosition = [modelMatrix[12], modelMatrix[13], modelMatrix[14]];
+                    mat4.translate(modelMatrix, [bumblebee.moveX,0,bumblebee.moveZ]);
+                    mat4.rotateY(modelMatrix, bumblebee.angle);
+                    bumblebee.position = [modelMatrix[12], modelMatrix[13], modelMatrix[14]];
                 } else {
                     mat4.translate(modelMatrix, [0,0,-1])
                 }
@@ -116,17 +110,15 @@ class Program {
 
                 switch(camera.type) {
                     case camera.CAMERA_FOLLOWING:
-                        camera.lookAt(viewMatrix, program.bumblebeePosition.map(p => p+5), program.bumblebeePosition, [1,0,1]);
+                        camera.lookAt(viewMatrix, bumblebee.position.map(p => p+5), bumblebee.position, [1,0,1]);
                         break;
                     case camera.CAMERA_TRACKING:
-                        camera.lookAt(viewMatrix, [10,10,10], program.bumblebeePosition, [1,0,1]);
+                        camera.lookAt(viewMatrix, [10,10,10], bumblebee.position, [1,0,1]);
                         break;
                     case camera.CAMERA_STATIC:
                         camera.lookAt(viewMatrix, [10,10,10], [0,0,0], [1,0,1]);
                         break;
                 }
-
-                
 
                 this.gl.uniformMatrix4fv(this.prg.uModelMatrix, false, modelMatrix);
                 this.gl.uniformMatrix4fv(this.prg.uViewMatrix, false, viewMatrix);

@@ -36,18 +36,18 @@ document.addEventListener('keydown', event => {
             program.changeShaders();
             break;
         case 37:
-            program.angle +=0.05;
+            bumblebee.angle +=0.05;
             break;
         case 39:
-            program.angle -=0.05;
+            bumblebee.angle -=0.05;
             break;
          case 38:
-             program.moveX -= Math.sin(program.angle) * 0.1;
-             program.moveZ -= Math.cos(program.angle) * 0.1;
+            bumblebee.moveX -= Math.sin(bumblebee.angle) * 0.1;
+            bumblebee.moveZ -= Math.cos(bumblebee.angle) * 0.1;
              break;
          case 40:
-             program.moveX += Math.sin(program.angle) * 0.1;
-             program.moveZ += Math.cos(program.angle) * 0.1;
+            bumblebee.moveX += Math.sin(bumblebee.angle) * 0.1;
+            bumblebee.moveZ += Math.cos(bumblebee.angle) * 0.1;
              break;
 
         case 81:
