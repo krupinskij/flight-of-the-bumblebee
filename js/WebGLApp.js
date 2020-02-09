@@ -7,10 +7,13 @@ class WebGLApp {
     run() {
         program.gl = utils.getGLContext("canvas-element-id");
         
-        const bumblebeePromise = scene.loadModel("model/bumblebee.json");
+        const rightEyePromise = scene.loadModel("model/right-eye.json");
+        const headPromise = scene.loadModel("model/head.json");
+        const bellyPromise = scene.loadModel("model/belly.json");
+        const leftEyePromise = scene.loadModel("model/left-eye.json");
         const grassPromise = scene.loadModel("model/grass.json");
 
-        Promise.all([bumblebeePromise, grassPromise])
+        Promise.all([rightEyePromise, headPromise, bellyPromise, leftEyePromise, grassPromise])
         .then(() => {
             program.init();
             program.initLights();

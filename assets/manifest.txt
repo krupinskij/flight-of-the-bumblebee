@@ -1,0 +1,5 @@
+original OBJ file: bumblebee.obj
+part1.json > alias: Sphere.002_Sphere.002_None
+part2.json > alias: Sphere.001_Sphere.001_None
+part3.json > alias: Sphere_Sphere_None
+part4.json > alias: Sphere.003_Sphere.003_None

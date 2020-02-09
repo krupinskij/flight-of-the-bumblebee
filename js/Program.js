@@ -63,7 +63,6 @@ class Program {
         this.gl.uniform3fv(this.prg.uLightDirection,  [10, 10, 10]);
         
         this.gl.uniform4fv(this.prg.uMaterialAmbient, [1.0,1.0,1.0,1.0]);
-        this.gl.uniform4fv(this.prg.uMaterialDiffuse, [1.0,0.9,0.4,1.0]);
         this.gl.uniform4fv(this.prg.uMaterialSpecular,[1.0,1.0,1.0,1.0]);
         this.gl.uniform1f(this.prg.uShininess, 100.0);
     }
@@ -101,8 +100,20 @@ class Program {
                     program.bumblebeePosition = [modelMatrix[12], modelMatrix[13], modelMatrix[14]];
                 } else {
                     mat4.translate(modelMatrix, [0,0,-1])
-
                 }
+
+                if(model.partname==="right-eye" || model.partname==="left-eye") {
+                    this.gl.uniform4fv(this.prg.uMaterialDiffuse, [1.0,1.0,1.0,1.0]);
+                } else if(model.partname==="head") {
+                    this.gl.uniform4fv(this.prg.uMaterialDiffuse, [0.3,0.3,0.3,0.0]);
+                } else if(model.partname==="belly") {
+                    this.gl.uniform4fv(this.prg.uMaterialDiffuse, [1.0,0.8,0.0,0.0]);
+                } else if(model.partname==="grass") {
+                    this.gl.uniform4fv(this.prg.uMaterialDiffuse, [0.0,0.6,0.1,1.0]);
+                } else {
+                    this.gl.uniform4fv(this.prg.uMaterialDiffuse, [0.0,0.0,0.0,1.0]);
+                }
+
                 switch(camera.type) {
                     case camera.CAMERA_FOLLOWING:
                         camera.lookAt(viewMatrix, program.bumblebeePosition.map(p => p+5), program.bumblebeePosition, [1,0,1]);
