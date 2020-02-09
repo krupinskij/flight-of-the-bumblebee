@@ -11,7 +11,7 @@ class Scene {
             model.normals = utils.calculateNormals(model.vertices, model.indices);
             console.log(model);
             this.objects.push(model);
-            console.log(this.objects);
+            //console.log(this.objects);
         })
     }
 
