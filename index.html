@@ -132,6 +132,8 @@
 
         uniform float uFogNear;
         uniform float uFogFar;
+        uniform vec4 uFogColor;
+        uniform float uLightness;
  
         void main(void) {
         
@@ -156,11 +158,11 @@
                 Is = uMaterialSpecular * specular;
             }
 
-            color = Ia + Id + Is;
+            color = Ia + uLightness * Id + Is;
             color.a = 1.0;
 
             float fogAmount = smoothstep(uFogNear, uFogFar, length(vertex));
-            color = mix(color, vec4(1.0,1.0,1.0,1.0), fogAmount);
+            color = mix(color, uFogColor, fogAmount);
 
             gl_Position = uProjectionMatrix * vertex;
         }
