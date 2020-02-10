@@ -4,10 +4,10 @@ const bumblebee = {
     moveX : 0,
     moveZ :  0,
 
-    distance: 15,
+    distance: 30,
 
     position : [0,0,0],
-    observer : [0,15,7.5],
+    observer : [0,30,15],
     upVector : [0,0,1],
     
     upDateObserver : () => {

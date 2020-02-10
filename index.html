@@ -10,6 +10,7 @@
     <script type='text/javascript' src='js/helpers/canvas.js'></script>
 
     <script type='text/javascript' src='js/Bumblebee.js'></script>
+    <script type='text/javascript' src='js/Fog.js'></script>
     <script type='text/javascript' src='js/Camera.js'></script>
     <script type='text/javascript' src='js/Utils.js'></script>
     <script type='text/javascript' src='js/Scene.js'></script>
@@ -36,6 +37,10 @@
         
         varying vec3 n;
         varying vec3 v;
+        varying float f;
+
+        uniform float uFogNear;
+        uniform float uFogFar;
         
         void main(void)
         {
@@ -61,8 +66,9 @@
              
              vec4 finalColor = Ia + Id + Is;
              finalColor.a = 1.0;
-             
-             gl_FragColor = finalColor;
+ 
+             float fogAmount = smoothstep(uFogNear, uFogFar, length(v));
+             gl_FragColor = mix(finalColor, vec4(1.0,1.0,1.0,1.0), fogAmount);
         }
         </script>
 
@@ -77,6 +83,7 @@
         
         varying vec3 n;
         varying vec3 v;
+        varying float f;
         
         void main(void) {
 
@@ -84,6 +91,7 @@
              
              n = vec3(uNormalMatrix * vec4(aVertexNormal, 1.0));
              v = vec3(vertex.xyz);
+             f = -vertex.z;
              
              gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
         }
@@ -119,6 +127,9 @@
         uniform vec4 uMaterialSpecular;  //object specular property
         
         varying vec4 color;
+
+        uniform float uFogNear;
+        uniform float uFogFar;
  
         void main(void) {
         
@@ -145,6 +156,9 @@
 
             color = Ia + Id + Is;
             color.a = 1.0;
+
+            float fogAmount = smoothstep(uFogNear, uFogFar, length(vertex));
+            color = mix(color, vec4(1.0,1.0,1.0,1.0), fogAmount);
 
             gl_Position = uProjectionMatrix * vertex;
         }

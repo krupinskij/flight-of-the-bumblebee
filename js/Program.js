@@ -7,7 +7,7 @@ class Program {
         this.vertexShader = null;
         this.fragmentShader = null;
 
-        this.clearColor = [0.3,0.3,0.3,1.0];
+        this.clearColor = [0.4,0.7,1.0,1.0];
 
         this.animationFrame = null;
 
@@ -17,7 +17,6 @@ class Program {
     }
 
     init() {
-        console.log(webGLApp.shaders[0])
         resize(this.gl.canvas);
         this.gl.viewport(0, 0, this.c_width, this.c_height);
 
@@ -51,6 +50,9 @@ class Program {
         this.prg.uShininess = this.gl.getUniformLocation(this.prg, "uShininess");
         
         this.prg.uLightDirection = this.gl.getUniformLocation(this.prg, "uLightDirection");
+
+        this.prg.uFogNear = this.gl.getUniformLocation(this.prg, "uFogNear");
+        this.prg.uFogFar = this.gl.getUniformLocation(this.prg, "uFogFar");
     }
 
     initLights(){
@@ -70,6 +72,8 @@ class Program {
         this.gl.viewport(0, 0, this.c_width, this.c_height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     
+        this.gl.uniform1f(this.prg.uFogNear, fog.near);
+        this.gl.uniform1f(this.prg.uFogFar, fog.far);
         
         
         try{

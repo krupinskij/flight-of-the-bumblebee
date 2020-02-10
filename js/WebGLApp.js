@@ -96,5 +96,12 @@ document.addEventListener('keydown', event => {
         case 69:
             camera.setType(camera.CAMERA_STATIC);
             break;
+
+        case 79:
+            fog.fogOn();
+            break;
+        case 80:
+            fog.fogOff();
+            break;
     }   
 })
