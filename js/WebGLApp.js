@@ -90,5 +90,15 @@ document.addEventListener('keydown', event => {
         case 86:
             program.blinn = false;
             break;
-    }   
+
+        case 90:
+            bumblebee.distance -= 1;
+            bumblebee.upDateObserver();
+            break;
+        case 88:
+            bumblebee.distance += 1;
+            bumblebee.upDateObserver();
+            break;
+
+    }
 })
