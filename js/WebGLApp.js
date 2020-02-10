@@ -83,5 +83,12 @@ document.addEventListener('keydown', event => {
         case 78:
             weather.nightOn();
             break;
+
+        case 66:
+            program.blinn = true;
+            break;
+        case 86:
+            program.blinn = false;
+            break;
     }   
 })

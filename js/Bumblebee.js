@@ -4,6 +4,8 @@ const bumblebee = {
     moveX : 0,
     moveZ :  0,
 
+    bellyAngle : 0,
+
     distance: 30,
 
     position : [0,0,0],

@@ -43,34 +43,32 @@
         uniform float uFogFar;
         uniform vec4 uFogColor;
         uniform float uLightness;
+
+        uniform bool uBlinnModel;
         
         void main(void)
         {
-             vec3 L = normalize(uLightDirection-v);
-             vec3 N = normalize(n);
-             
-             float lambertTerm = dot(N,L);
 
-             vec4 Ia = vec4(0.0, 0.0, 0.0, 1.0) * uMaterialAmbient;
-             vec4 Id = vec4(0.0,0.0,0.0,1.0);
-             vec4 Is = vec4(0.0,0.0,0.0,1.0);
+            vec3 N = normalize(n);
+            vec4 finalColor = vec4(0.0, 0.0, 0.0, 1.0);
              
-             if(lambertTerm > 0.0)
-             {
-                  Id = uMaterialDiffuse * lambertTerm;
-                  
-                  vec3 V = normalize(-v);
-                  vec3 R = reflect(-L, N);
-                  float specular = pow( max(dot(R, V), 0.0), uShininess);
-                  
-                  Is = uMaterialSpecular * specular;
-             }
+            vec3 L = normalize(uLightDirection-v);
+            vec3 V = normalize(-v);
+            vec3 R = reflect(-L, N);
+            vec3 H = normalize(L + V);
+
+            vec4 Ia = vec4(0.0, 0.0, 0.0, 1.0) * uMaterialAmbient;
+            vec4 Id = uMaterialDiffuse * max(dot(N, L), 0.0);
+            vec4 Is = vec4(0.0, 0.0, 0.0, 1.0);
+
+            if(uBlinnModel) Is = uMaterialSpecular * pow(max(dot(N, H), 0.0), uShininess);
+            else Is = uMaterialSpecular * pow(max(dot(R, V), 0.0), uShininess);
              
-             vec4 finalColor = Ia + uLightness * Id + Is;
-             finalColor.a = 1.0;
+            finalColor = Ia + uLightness * Id + Is;
+            finalColor.a = 1.0;
  
-             float fogAmount = smoothstep(uFogNear, uFogFar, length(v));
-             gl_FragColor = mix(finalColor, uFogColor, fogAmount);
+            float fogAmount = smoothstep(uFogNear, uFogFar, length(v));
+            gl_FragColor = mix(finalColor, uFogColor, fogAmount);
         }
         </script>
 
@@ -134,29 +132,30 @@
         uniform float uFogFar;
         uniform vec4 uFogColor;
         uniform float uLightness;
+
+        uniform bool uBlinnModel;
  
         void main(void) {
         
             vec4 vertex = uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
+            
             vec3 N = vec3(uNormalMatrix * vec4(aVertexNormal, 1.0));
+            color = vec4(0.0, 0.0, 0.0, 1.0);
+
             vec3 L = normalize(uLightDirection - vec3(vertex)); 
-            
-            float lambertTerm = dot(N,L);
-            
-            vec4 Ia = vec4(0.0,0.0,0.0,1.0) * uMaterialAmbient;
-            vec4 Id = vec4(0.0,0.0,0.0,1.0);
-            vec4 Is = vec4(0.0,0.0,0.0,1.0);
-            
-            if(lambertTerm > 0.0) //only if lambertTerm is positive
-            {
-                Id = uMaterialDiffuse * lambertTerm;
-                
-                vec3 V = normalize(-vertex.xyz);
-                vec3 R = reflect(L, N);
-                float specular = pow(max(dot(R, V), 0.0), uShininess );
-                
-                Is = uMaterialSpecular * specular;
-            }
+            vec3 V = normalize(-vec3(vertex));
+            vec3 R = reflect(-L, N);
+            vec3 H = normalize(L + V);
+
+            vec4 Ia = vec4(0.0, 0.0, 0.0, 1.0) * uMaterialAmbient;
+            vec4 Id = uMaterialDiffuse * max(dot(N, L), 0.0);
+            vec4 Is = vec4(0.0, 0.0, 0.0, 1.0);
+
+            if(uBlinnModel) Is = uMaterialSpecular * pow(max(dot(N, H), 0.0), uShininess);
+            else Is = uMaterialSpecular * pow(max(dot(R, V), 0.0), uShininess);
+
+            color = Ia + uLightness * Id + Is;
+            color.a = 1.0;
 
             color = Ia + uLightness * Id + Is;
             color.a = 1.0;

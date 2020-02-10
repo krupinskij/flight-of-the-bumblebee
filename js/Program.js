@@ -14,6 +14,8 @@ class Program {
         this.c_width = 0;
         this.c_height = 0;
 
+        this.blinn = false;
+
     }
 
     init() {
@@ -55,6 +57,8 @@ class Program {
         this.prg.uFogFar = this.gl.getUniformLocation(this.prg, "uFogFar");
         this.prg.uFogColor = this.gl.getUniformLocation(this.prg, "uFogColor");
         this.prg.uLightness = this.gl.getUniformLocation(this.prg, "uLightness");
+
+        this.prg.uBlinnModel = this.gl.getUniformLocation(this.prg, "uBlinnModel");
     }
 
     initLights(){
@@ -79,6 +83,8 @@ class Program {
         this.gl.uniform4fv(this.prg.uFogColor, weather.getFogColor());
         this.gl.uniform1f(this.prg.uLightness, weather.getLightness());
         
+        this.gl.uniform1i(this.prg.uBlinnModel, program.blinn);
+        
 
         
         try{
@@ -100,6 +106,9 @@ class Program {
                 if(model.alias==="bumblebee") {
                     mat4.translate(modelMatrix, [bumblebee.moveX,0,bumblebee.moveZ]);
                     mat4.rotateY(modelMatrix, bumblebee.angle);
+
+                    if(model.partname==="belly") mat4.rotateZ(modelMatrix, bumblebee.bellyAngle);
+
                     bumblebee.position = [modelMatrix[12], modelMatrix[13], modelMatrix[14]];
                 } else {
                     mat4.translate(modelMatrix, [0,0,-1])
@@ -185,6 +194,7 @@ class Program {
 
     renderLoop() {
         program.animationFrame = requestAnimationFrame(program.renderLoop);
+        bumblebee.bellyAngle += 0.05;
         program.draw();
     }
 }
