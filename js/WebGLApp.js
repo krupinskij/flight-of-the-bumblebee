@@ -98,10 +98,17 @@ document.addEventListener('keydown', event => {
             break;
 
         case 79:
-            fog.fogOn();
+            weather.fogOn();
             break;
         case 80:
-            fog.fogOff();
+            weather.fogOff();
+            break;
+
+        case 77:
+            weather.dayOn();
+            break;
+        case 78:
+            weather.nightOn();
             break;
     }   
 })

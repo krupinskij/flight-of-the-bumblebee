@@ -7,7 +7,7 @@ class Program {
         this.vertexShader = null;
         this.fragmentShader = null;
 
-        this.clearColor = [0.4,0.7,1.0,1.0];
+        this.clearColor = [0.4, 0.7, 1.0, 1.0];
 
         this.animationFrame = null;
 
@@ -53,6 +53,8 @@ class Program {
 
         this.prg.uFogNear = this.gl.getUniformLocation(this.prg, "uFogNear");
         this.prg.uFogFar = this.gl.getUniformLocation(this.prg, "uFogFar");
+        this.prg.uFogColor = this.gl.getUniformLocation(this.prg, "uFogColor");
+        this.prg.uLightness = this.gl.getUniformLocation(this.prg, "uLightness");
     }
 
     initLights(){
@@ -65,16 +67,19 @@ class Program {
 
     draw() {
     
-        this.gl.clearColor(...this.clearColor);
+        this.gl.clearColor(...weather.getSkyColor());
         this.gl.clearDepth(100.0);
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.depthFunc(this.gl.LEQUAL);
         this.gl.viewport(0, 0, this.c_width, this.c_height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     
-        this.gl.uniform1f(this.prg.uFogNear, fog.near);
-        this.gl.uniform1f(this.prg.uFogFar, fog.far);
+        this.gl.uniform1f(this.prg.uFogNear, weather.fogNear);
+        this.gl.uniform1f(this.prg.uFogFar, weather.fogFar);
+        this.gl.uniform4fv(this.prg.uFogColor, weather.getFogColor());
+        this.gl.uniform1f(this.prg.uLightness, weather.getLightness());
         
+
         
         try{
             for (const model of scene.objects){

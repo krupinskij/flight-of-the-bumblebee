@@ -10,7 +10,7 @@
     <script type='text/javascript' src='js/helpers/canvas.js'></script>
 
     <script type='text/javascript' src='js/Bumblebee.js'></script>
-    <script type='text/javascript' src='js/Fog.js'></script>
+    <script type='text/javascript' src='js/Weather.js'></script>
     <script type='text/javascript' src='js/Camera.js'></script>
     <script type='text/javascript' src='js/Utils.js'></script>
     <script type='text/javascript' src='js/Scene.js'></script>
@@ -41,6 +41,8 @@
 
         uniform float uFogNear;
         uniform float uFogFar;
+        uniform vec4 uFogColor;
+        uniform float uLightness;
         
         void main(void)
         {
@@ -64,11 +66,11 @@
                   Is = uMaterialSpecular * specular;
              }
              
-             vec4 finalColor = Ia + Id + Is;
+             vec4 finalColor = Ia + uLightness * Id + Is;
              finalColor.a = 1.0;
  
              float fogAmount = smoothstep(uFogNear, uFogFar, length(v));
-             gl_FragColor = mix(finalColor, vec4(1.0,1.0,1.0,1.0), fogAmount);
+             gl_FragColor = mix(finalColor, uFogColor, fogAmount);
         }
         </script>
 
