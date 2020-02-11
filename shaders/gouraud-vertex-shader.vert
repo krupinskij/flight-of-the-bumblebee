@@ -24,6 +24,10 @@ uniform vec4 uFogColor;
 uniform float uLightness;
 
 uniform bool uBlinnModel;
+
+uniform bool uReflector;
+
+uniform bool uFog;
  
 void main(void) {
 
@@ -63,12 +67,14 @@ void main(void) {
         else Is = uMaterialSpecular * pow(max(dot(R, V), 0.0), uShininess);
     }
 
-    color = Ia + uLightness * Id + Is;
-    color += vec4(0.0, 0.0, 0.0, 1.0) * light + specular;
+    color = Ia + uLightness * Id + uLightness * Is;
+    if(uReflector) color += vec4(0.0, 0.0, 0.0, 1.0) * light + specular;
     color.a = 1.0;
 
-    float fogAmount = smoothstep(uFogNear, uFogFar, length(vertex));
-    color = mix(color, uFogColor, fogAmount);
+    if(uFog) {
+        float fogAmount = smoothstep(uFogNear, uFogFar, length(vertex.xyz));
+        color = mix(color, uFogColor, fogAmount);
+    }
 
     gl_Position = uProjectionMatrix * vertex;
 }

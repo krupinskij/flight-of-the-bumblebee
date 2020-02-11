@@ -1,11 +1,11 @@
 class Camera {
 
     constructor() {
-        this.CAMERA_FOLLOWING = 1;
-        this.CAMERA_TRACKING = 2;
-        this.CAMERA_STATIC = 3;
+        this.CAMERA_FOLLOWING = "following-camera";
+        this.CAMERA_TRACKING = "tracking-camera";
+        this.CAMERA_STATIC = "static-camera";
 
-        this.type = this.CAMERA_STATIC;
+        this.type = this.CAMERA_FOLLOWING;
     }
 
     lookAt(matrix, cameraPosition, cameraTarget, cameraUpVector) {
@@ -45,6 +45,9 @@ class Camera {
 
     setType(type) {
         this.type = type;
+        document.getElementById(type).checked = true;
+        console.info("Camera set to: " + type);
+
     }
 
 }

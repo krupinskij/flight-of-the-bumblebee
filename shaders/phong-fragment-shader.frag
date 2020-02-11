@@ -21,6 +21,8 @@ uniform vec4 uFogColor;
 uniform float uLightness;
 
 uniform bool uBlinnModel;
+uniform bool uReflector;
+uniform bool uFog;
         
 void main(void)
 {
@@ -59,9 +61,13 @@ void main(void)
     }
              
     finalColor = Ia + uLightness * Id + uLightness *Is;
-    finalColor += vec4(0.0, 0.0, 0.0, 1.0) * light + specular;
+    if(uReflector) finalColor += vec4(0.0, 0.0, 0.0, 1.0) * light + specular;
     finalColor.a = 1.0;
  
-    float fogAmount = smoothstep(uFogNear, uFogFar, length(v));
-    gl_FragColor = mix(finalColor, uFogColor, fogAmount);
+    if(uFog) {
+        float fogAmount = smoothstep(uFogNear, uFogFar, length(v));
+        gl_FragColor = mix(finalColor, uFogColor, fogAmount);
+    } else {
+        gl_FragColor = finalColor;
+    }
 }

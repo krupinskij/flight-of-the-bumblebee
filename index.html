@@ -5,16 +5,21 @@
     <title> Flight Of The Bumblebee </title>
 
     <link rel="stylesheet" href="css/canvas.css">
+    <link rel="stylesheet" href="css/panel.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Courier+Prime&display=swap" rel="stylesheet"> 
 
     <script type='text/javascript' src='js/helpers/gl-matrix-min.js'></script>
     <script type='text/javascript' src='js/helpers/canvas.js'></script>
 
-    <script type='text/javascript' src='js/Bumblebee.js'></script>
-    <script type='text/javascript' src='js/Weather.js'></script>
-    <script type='text/javascript' src='js/Camera.js'></script>
-    <script type='text/javascript' src='js/Utils.js'></script>
-    <script type='text/javascript' src='js/Scene.js'></script>
-    <script type='text/javascript' src='js/Program.js'></script>
+    <script type='text/javascript' src='js/object/Bumblebee.js'></script>
+    <script type='text/javascript' src='js/object/Camera.js'></script>
+    <script type='text/javascript' src='js/object/Shader.js'></script>
+    <script type='text/javascript' src='js/object/Weather.js'></script>
+    
+    <script type='text/javascript' src='js/webgl/Utils.js'></script>
+    <script type='text/javascript' src='js/webgl/Scene.js'></script>
+    <script type='text/javascript' src='js/webgl/Program.js'></script>
 
 </head>
 
@@ -23,7 +28,126 @@
         Your browser does not support HTML5
     </canvas>
 
-    <script type='text/javascript' src='js/WebGLApp.js'></script>
+    <div class="panel panel">
+        <h2 class="panel__header">
+            Shaders [1]
+        </h2>
+
+        <form class="panel__form">
+
+            <section class="panel__section">
+                <input type="radio" name="shading" id="phong-shading" checked>
+                <label for="phong-shading">Phong shading [A]</label>
+            </section>
+
+            <section class="panel__section">
+                <input type="radio" name="shading" id="gouraud-shading">
+                <label for="goraud-shading">Gouraud shading [S]</label>
+            </section>
+
+            <hr class="panel__separator"/>
+
+            <section class="panel__section">
+                <input type="radio" name="shading-model" id="phong-model" checked>
+                <label for="phong-model">Phong model [Z]</label>
+            </section>
+
+            <section class="panel__section">
+                <input type="radio" name="shading-model" id="blinn-model">
+                <label for="blinn-model">Blinn model [X]</label>
+            </section>
+        </form>
+    </div>
+
+    <div class="panel">
+        <h2 class="panel__header">
+            Camera [2]
+        </h2>
+
+        <form class="panel__form">
+
+            <section class="panel__section">
+                <input type="radio" name="camera" id="following-camera" checked>
+                <label for="following-camera">Following camera [Q]</label>
+            </section>
+
+            <section class="panel__section">
+                <input type="radio" name="camera" id="tracking-camera">
+                <label for="tracking-camera">Tracking camera [W]</label>
+            </section>
+
+            <section class="panel__section">
+                <input type="radio" name="camera" id="static-camera">
+                <label for="static-camera">Static camera [E]</label>
+            </section>
+        </form>
+    </div>
+
+    <div class="panel">
+        <h2 class="panel__header">
+            Bumblebee [3]
+        </h2>
+
+        <form class="panel__form">
+
+            <section class="panel__section">
+                <input type="checkbox" id="bumbebee-reflector">
+                <label for="bumbebee-reflector">Bumblebee reflector</label>
+            </section>
+
+            <section class="panel__section panel__section--vertically">
+                <label for="bumbebee-reflector-horizontally">Forward-backward</label>
+                <input type="range" min="-30" max="30" value="0" id="bumbebee-reflector-vertically">
+            </section>
+
+            <section class="panel__section panel__section--vertically">
+                <label for="bumbebee-reflector-vertically">Left-right</label>
+                <input type="range" min="-30" max="30" value="0" id="bumbebee-reflector-horizontally">
+            </section>
+
+            <hr class="panel__separator"/>
+            
+            <section class="panel__section">
+                <input type="checkbox" id="bumbebee-turning" checked>
+                <label for="bumbebee-turning">Bumblebee turning</label>
+            </section>
+        </form>
+    </div>
+
+    <div class="panel panel">
+        <h2 class="panel__header">
+            Weather [4]
+        </h2>
+
+        <form class="panel__form">
+
+            <section class="panel__section">
+                <input type="checkbox" id="weather-fog">
+                <label for="weather-fog">Fog [O/P]</label>
+            </section>
+
+            <section class="panel__section panel__section--vertically">
+                <label for="weather-fog-near">Fog near</label>
+                <input type="range" min="0" max="100" value="25" id="weather-fog-near">
+            </section>
+
+            <section class="panel__section panel__section--vertically">
+                <label for="weather-fog-far">Fog far</label>
+                <input type="range" min="0" max="100" value="75" id="weather-fog-far">
+            </section>
+
+            <hr class="panel__separator"/>
+            
+            <section class="panel__section">
+                <input type="checkbox" id="weather-night">
+                <label for="weather">Night [K/L]</label>
+            </section>
+        </form>
+    </div>
+
+    <script type='text/javascript' src='js/webgl/WebGLApp.js'></script>
+    
+    <script type='text/javascript' src='js/controller.js'></script>
 </body>
 
 </html>

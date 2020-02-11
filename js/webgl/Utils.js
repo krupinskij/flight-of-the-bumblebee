@@ -59,6 +59,7 @@ class Utils {
 				return null;
 			}
 
+			console.info("Loaded: " + filename);
 			return shader;
 		})
 	}

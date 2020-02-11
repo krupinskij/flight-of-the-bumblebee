@@ -14,18 +14,16 @@ class Program {
         this.c_width = 0;
         this.c_height = 0;
 
-        this.blinn = false;
-
     }
 
     runProgram() {
-        //let fragmentShader;
-        //let vertexShader;
 
-        const fsPromise = utils.getShader(program.gl, webGLApp.shaders[0], "fragment-shader")
+        const shaders = shader.getShading();
+
+        const fsPromise = utils.getShader(program.gl, shaders[0], "fragment-shader")
         .then(shader => { program.fragmentShader = shader; });
 
-        const vsPromise = utils.getShader(program.gl, webGLApp.shaders[1], "vertex-shader")
+        const vsPromise = utils.getShader(program.gl, shaders[1], "vertex-shader")
         .then(shader => { program.vertexShader = shader; });
 
         Promise.all([fsPromise, vsPromise])
@@ -76,6 +74,9 @@ class Program {
 
         this.prg.uLightWorldPosition = this.gl.getUniformLocation(this.prg, "uLightWorldPosition");
         this.prg.uViewWorldPosition = this.gl.getUniformLocation(this.prg, "uViewWorldPosition");
+        this.prg.uReflector = this.gl.getUniformLocation(this.prg, "uReflector");
+
+        this.prg.uFog = this.gl.getUniformLocation(this.prg, "uFog");
     }
 
     initUniforms() {
@@ -93,20 +94,18 @@ class Program {
         this.gl.depthFunc(this.gl.LEQUAL);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     
-        this.gl.uniform1f(this.prg.uFogNear, weather.fogNear);
-        this.gl.uniform1f(this.prg.uFogFar, weather.fogFar);
+        this.gl.uniform1f(this.prg.uFogNear, weather.getFogNear());
+        this.gl.uniform1f(this.prg.uFogFar, weather.getFogFar());
         this.gl.uniform4fv(this.prg.uFogColor, weather.getFogColor());
         this.gl.uniform1f(this.prg.uLightness, weather.getLightness());
         
-        this.gl.uniform1i(this.prg.uBlinnModel, program.blinn);
-        
-
+        this.gl.uniform1i(this.prg.uBlinnModel, shader.isBlinnModel());
+        this.gl.uniform1i(this.prg.uReflector, bumblebee.isReflector());
+        this.gl.uniform1i(this.prg.uFog, weather.isEnabledFog());
         
         
         try{
             for (const model of scene.objects){
-
-                
 
                 const modelMatrix = mat4.create();
                 const viewMatrix = mat4.create();
@@ -122,14 +121,12 @@ class Program {
 
 
                 if(model.alias==="bumblebee") {
-                    mat4.translate(modelMatrix, [bumblebee.moveX,10,bumblebee.moveZ]);
-                    mat4.rotateY(modelMatrix, bumblebee.angle);
+                    mat4.translate(modelMatrix, bumblebee.getMove());
+                    mat4.rotateY(modelMatrix, bumblebee.getAngle());
 
-                    if(model.partname==="belly") mat4.rotateZ(modelMatrix, bumblebee.bellyAngle);
-                    //if(model.partname==="left-wing") mat4.rotateZ(modelMatrix, bumblebee.wingAngle);
-                    //if(model.partname==="right-wing") mat4.rotateZ(modelMatrix, -bumblebee.wingAngle);
+                    if(model.partname==="belly" && bumblebee.isTurning()) mat4.rotateZ(modelMatrix, bumblebee.getBellyAngle());
 
-                    bumblebee.position = [modelMatrix[12], modelMatrix[13], modelMatrix[14]];
+                    bumblebee.setPosition([modelMatrix[12], modelMatrix[13], modelMatrix[14]]);
                 }
 
                 
@@ -137,27 +134,24 @@ class Program {
 
                 switch(camera.type) {
                     case camera.CAMERA_FOLLOWING:
-                        camera.lookAt(viewMatrix, bumblebee.observer, bumblebee.position, bumblebee.upVector);
+                        camera.lookAt(viewMatrix, bumblebee.getObserver(), bumblebee.getPosition(), bumblebee.getUpVector());
                         break;
                     case camera.CAMERA_TRACKING:
-                        camera.lookAt(viewMatrix, [40,40,0], bumblebee.position, [0,-1,0]);
+                        camera.lookAt(viewMatrix, [40,40,0], bumblebee.getPosition(), [0,-1,0]);
                         break;
                     case camera.CAMERA_STATIC:
                         camera.lookAt(viewMatrix, [50,50,0], [0,0,0], [0, -1,0]);
                         break;
                 }
 
-                
-
-                this.gl.uniform3fv(this.prg.uLightWorldPosition, bumblebee.position);
-                this.gl.uniform3fv(this.prg.uViewWorldPosition,  [bumblebee.position[0]-20*Math.sin(bumblebee.angle), bumblebee.position[1], bumblebee.position[2]-20*Math.cos(bumblebee.angle)]);
+                this.gl.uniform3fv(this.prg.uLightWorldPosition, bumblebee.getPosition());
+                this.gl.uniform3fv(this.prg.uViewWorldPosition,  bumblebee.getSpotPostion());
 
                 this.gl.uniformMatrix4fv(this.prg.uModelMatrix, false, modelMatrix);
                 this.gl.uniformMatrix4fv(this.prg.uViewMatrix, false, viewMatrix);
                 this.gl.uniformMatrix4fv(this.prg.uProjectionMatrix, false, projectionMatrix);
 
                 mat4.identity(normalMatrix);
-                //mat4.set(viewMatrix, normalMatrix);
                 mat4.multiply(normalMatrix, modelMatrix);
                 mat4.inverse(normalMatrix);
                 mat4.transpose(normalMatrix);
@@ -215,13 +209,31 @@ class Program {
     renderLoop() {
         program.animationFrame = requestAnimationFrame(program.renderLoop);
         bumblebee.bellyAngle += 0.05;
-        i+=0.5;
-        //bumblebee.wingAngle +=bumblebee.wingAngleStep;
-        //if(bumblebee.wingAngle>-0.1 || bumblebee.wingAngle<-0.4) bumblebee.wingAngleStep*=-1;
+        if(weather.isNight() && weather.getLightness()>0.05) {
+            weather.setLightness(weather.getLightness() - 0.05);
+        } else if (!weather.isNight() && weather.getLightness()<1.0) {
+            weather.setLightness(weather.getLightness() + 0.05);
+        }
+
+        if(weather.isFog() && weather.getFogFar() > weather.getFogFarDest()) {
+            weather.setFogFar(weather.getFogFar() - 1);
+        } else if(weather.isFog() && weather.getFogFar() < weather.getFogFarDest()) {
+            weather.setFogFar(weather.getFogFar() + 1);
+        } else if(!weather.isFog() && weather.getFogFar() < 125.0) {
+            weather.setFogFar(weather.getFogFar() + 1);
+        }
+
+        if(weather.isFog() && weather.getFogNear() > weather.getFogNearDest()) {
+            weather.setFogNear(weather.getFogNear() - 1);
+        } else if(weather.isFog() && weather.getFogNear() < weather.getFogNearDest()) {
+            weather.setFogNear(weather.getFogNear() + 1);
+        } else if(!weather.isFog() && weather.getFogNear() < 100.0) {
+            weather.setFogNear(weather.getFogNear() + 1);
+            if(weather.getFogNear() >= 100.0) weather.disabledFog();
+        }
+
         program.draw();
     }
 }
 
 const program = new Program();
-
-let i = -50;
