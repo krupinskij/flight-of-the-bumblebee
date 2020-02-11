@@ -73,12 +73,10 @@ class Program {
     }
 
     draw() {
-    
         this.gl.clearColor(...weather.getSkyColor());
         this.gl.clearDepth(100.0);
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.depthFunc(this.gl.LEQUAL);
-        this.gl.viewport(0, 0, this.c_width, this.c_height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     
         this.gl.uniform1f(this.prg.uFogNear, weather.fogNear);
@@ -90,8 +88,11 @@ class Program {
         
 
         
+        
         try{
             for (const model of scene.objects){
+
+                
 
                 const modelMatrix = mat4.create();
                 const viewMatrix = mat4.create();

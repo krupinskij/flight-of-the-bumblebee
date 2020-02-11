@@ -11,9 +11,6 @@ function resize(canvas) {
 }
 
 window.addEventListener('resize', () => {
-    resize(program.gl.canvas);
-    
-    program.gl.viewport(0, 0, program.c_width, program.c_height);
-
-    console.log("nieee")
+    program.gl.canvas.width = window.outerWidth;
+    program.gl.canvas.height = window.outerHeight;
 })

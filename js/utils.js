@@ -10,6 +10,8 @@ class Utils {
 			return null;
 		}
 		else {
+			canvas.width = window.outerWidth;
+			canvas.height = window.outerHeight;
 			program.c_width = canvas.width;
 			program.c_height = canvas.height;
 		}

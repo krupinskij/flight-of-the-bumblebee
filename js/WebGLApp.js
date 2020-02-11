@@ -24,6 +24,10 @@ class WebGLApp {
             program.init();
             program.initLights();
             program.renderLoop();
+
+            
+        })
+        .then(() => {
         })
     }
 }
@@ -36,6 +40,7 @@ document.addEventListener('keydown', event => {
         case 49: 
             webGLApp.shaders = ["phong/shader-fs", "phong/shader-vs"];
             program.changeShaders();
+            resize(program.gl.canvas);
             break;
         case 50:
             webGLApp.shaders = ["gouraud/shader-fs", "gouraud/shader-vs"];
