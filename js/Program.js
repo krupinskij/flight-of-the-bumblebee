@@ -18,24 +18,38 @@ class Program {
 
     }
 
-    init() {
-        resize(this.gl.canvas);
-        this.gl.viewport(0, 0, this.c_width, this.c_height);
+    runProgram() {
+        //let fragmentShader;
+        //let vertexShader;
 
-        this.fragmentShader = utils.getShader(this.gl, webGLApp.shaders[0]);
-        this.vertexShader = utils.getShader(this.gl, webGLApp.shaders[1]);
+        const fsPromise = utils.getShader(program.gl, webGLApp.shaders[0], "fragment-shader")
+        .then(shader => { program.fragmentShader = shader; });
 
-        this.prg = this.gl.createProgram();
+        const vsPromise = utils.getShader(program.gl, webGLApp.shaders[1], "vertex-shader")
+        .then(shader => { program.vertexShader = shader; });
 
-        this.gl.attachShader(this.prg, this.vertexShader);
-        this.gl.attachShader(this.prg, this.fragmentShader);
-        this.gl.linkProgram(this.prg);
+        Promise.all([fsPromise, vsPromise])
+        .then(() => {
+            program.prg = program.gl.createProgram();
 
-        if (!this.gl.getProgramParameter(this.prg, this.gl.LINK_STATUS)) {
-            alert("Could not initialise shaders");
-        }
+            program.gl.attachShader(program.prg, program.vertexShader);
+            program.gl.attachShader(program.prg, program.fragmentShader);
+            program.gl.linkProgram(program.prg);
 
-        this.gl.useProgram(this.prg);
+            if (!program.gl.getProgramParameter(program.prg, program.gl.LINK_STATUS)) {
+                alert("Could not initialise shaders");
+            }
+
+            program.gl.useProgram(program.prg);
+
+            program.getUniforms();
+            program.initUniforms();
+            program.renderLoop();
+        })
+
+    }
+
+    getUniforms() {
 
         this.prg.aVertexPosition = this.gl.getAttribLocation(this.prg, "aVertexPosition");
         this.prg.aVertexNormal = this.gl.getAttribLocation(this.prg, "aVertexNormal");
@@ -64,7 +78,7 @@ class Program {
         this.prg.uViewWorldPosition = this.gl.getUniformLocation(this.prg, "uViewWorldPosition");
     }
 
-    initLights(){
+    initUniforms() {
         this.gl.uniform3fv(this.prg.uLightDirection, [-100, 1000, -100]);
         
         this.gl.uniform4f(this.prg.uMaterialAmbient, 0.0,0.0,0.0,1.0);
@@ -194,10 +208,8 @@ class Program {
         this.gl.deleteShader(this.fragmentShader);
         this.gl.deleteShader(this.vertexShader);
         cancelAnimationFrame(this.animationFrame)
-
-        this.init();
-        this.initLights();
-        this.renderLoop();
+        
+        this.runProgram();
     }
 
     renderLoop() {

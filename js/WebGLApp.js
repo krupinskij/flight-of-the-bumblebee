@@ -1,34 +1,24 @@
 class WebGLApp {
 
     constructor() {
-        this.shaders = ["phong/shader-fs", "phong/shader-vs"]
+        this.shaders = ["phong-fragment-shader.frag", "phong-vertex-shader.vert"];
     }
 
     run() {
         program.gl = utils.getGLContext("canvas-element-id");
         
         const bumblebeePromise = scene.loadBumblebee();
-
         const grassPromise = scene.loadGrass();
 
         for(let i = 0; i < 15; i++) {
             scene.loadFlower();
         }
 
-        for(let i = 0; i < 0; i++) {
-            //scene.loadDandelion();
-        }
+        
+        
 
         Promise.all([bumblebeePromise, grassPromise])
-        .then(() => {
-            program.init();
-            program.initLights();
-            program.renderLoop();
-
-            
-        })
-        .then(() => {
-        })
+        .then(program.runProgram)
     }
 }
 
@@ -38,12 +28,11 @@ webGLApp.run();
 document.addEventListener('keydown', event => {
     switch(event.keyCode) {
         case 49: 
-            webGLApp.shaders = ["phong/shader-fs", "phong/shader-vs"];
+            webGLApp.shaders = ["phong-fragment-shader.frag", "phong-vertex-shader.vert"];
             program.changeShaders();
-            resize(program.gl.canvas);
             break;
         case 50:
-            webGLApp.shaders = ["gouraud/shader-fs", "gouraud/shader-vs"];
+            webGLApp.shaders = ["gouraud-fragment-shader.frag", "gouraud-vertex-shader.vert"];
             program.changeShaders();
             break;
         case 37:

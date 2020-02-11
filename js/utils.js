@@ -37,38 +37,30 @@ class Utils {
 	}
 
 
-	getShader = function (gl, id) {
-		const script = document.getElementById(id);
-		if (!script) {
-			return null;
-		}
-
-		let str = "";
-		let k = script.firstChild;
-		while (k) {
-			if (k.nodeType == 3) {
-				str += k.textContent;
-			}
-			k = k.nextSibling;
-		}
+	getShader = function (gl, filename, type) {
 
 		let shader;
-		if (script.type == "x-shader/x-fragment") {
+		if (type == "fragment-shader") {
 			shader = gl.createShader(gl.FRAGMENT_SHADER);
-		} else if (script.type == "x-shader/x-vertex") {
+		} else if (type == "vertex-shader") {
 			shader = gl.createShader(gl.VERTEX_SHADER);
 		} else {
-			return null;
+			throw Error("Incorrect type of shader");
 		}
 
-		gl.shaderSource(shader, str);
-		gl.compileShader(shader);
+		return fetch("http://" + document.domain + ":" + location.port + "/shaders/" + filename)
+		.then(resp => resp.text())
+		.then(str => {
+			gl.shaderSource(shader, str);
+			gl.compileShader(shader);
 
-		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-			alert(gl.getShaderInfoLog(shader));
-			return null;
-		}
-		return shader;
+			if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+				alert(gl.getShaderInfoLog(shader));
+				return null;
+			}
+
+			return shader;
+		})
 	}
 
 	calculateNormals = function(vs, ind) {
