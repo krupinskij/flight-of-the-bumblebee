@@ -59,10 +59,13 @@ class Program {
         this.prg.uLightness = this.gl.getUniformLocation(this.prg, "uLightness");
 
         this.prg.uBlinnModel = this.gl.getUniformLocation(this.prg, "uBlinnModel");
+
+        this.prg.uLightWorldPosition = this.gl.getUniformLocation(this.prg, "uLightWorldPosition");
+        this.prg.uViewWorldPosition = this.gl.getUniformLocation(this.prg, "uViewWorldPosition");
     }
 
     initLights(){
-        this.gl.uniform3fv(this.prg.uLightDirection, [100, 1000, 100]);
+        this.gl.uniform3fv(this.prg.uLightDirection, [-100, 1000, -100]);
         
         this.gl.uniform4f(this.prg.uMaterialAmbient, 0.0,0.0,0.0,1.0);
         this.gl.uniform4f(this.prg.uMaterialSpecular, 1.0,1.0,1.0,1.0);
@@ -104,7 +107,7 @@ class Program {
 
 
                 if(model.alias==="bumblebee") {
-                    mat4.translate(modelMatrix, [bumblebee.moveX,0,bumblebee.moveZ]);
+                    mat4.translate(modelMatrix, [bumblebee.moveX,10,bumblebee.moveZ]);
                     mat4.rotateY(modelMatrix, bumblebee.angle);
 
                     if(model.partname==="belly") mat4.rotateZ(modelMatrix, bumblebee.bellyAngle);
@@ -128,6 +131,11 @@ class Program {
                         camera.lookAt(viewMatrix, [50,50,0], [0,0,0], [0, -1,0]);
                         break;
                 }
+
+                
+
+                this.gl.uniform3fv(this.prg.uLightWorldPosition, bumblebee.position);
+                this.gl.uniform3fv(this.prg.uViewWorldPosition,  [bumblebee.position[0]-20*Math.sin(bumblebee.angle), bumblebee.position[1], bumblebee.position[2]-20*Math.cos(bumblebee.angle)]);
 
                 this.gl.uniformMatrix4fv(this.prg.uModelMatrix, false, modelMatrix);
                 this.gl.uniformMatrix4fv(this.prg.uViewMatrix, false, viewMatrix);
@@ -194,6 +202,7 @@ class Program {
     renderLoop() {
         program.animationFrame = requestAnimationFrame(program.renderLoop);
         bumblebee.bellyAngle += 0.05;
+        i+=0.5;
         //bumblebee.wingAngle +=bumblebee.wingAngleStep;
         //if(bumblebee.wingAngle>-0.1 || bumblebee.wingAngle<-0.4) bumblebee.wingAngleStep*=-1;
         program.draw();
@@ -201,3 +210,5 @@ class Program {
 }
 
 const program = new Program();
+
+let i = -50;

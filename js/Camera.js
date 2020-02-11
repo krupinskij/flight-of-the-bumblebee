@@ -5,7 +5,7 @@ class Camera {
         this.CAMERA_TRACKING = 2;
         this.CAMERA_STATIC = 3;
 
-        this.type = this.CAMERA_FOLLOWING;
+        this.type = this.CAMERA_STATIC;
     }
 
     lookAt(matrix, cameraPosition, cameraTarget, cameraUpVector) {

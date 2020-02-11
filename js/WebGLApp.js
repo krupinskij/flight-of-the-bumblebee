@@ -11,12 +11,12 @@ class WebGLApp {
 
         const grassPromise = scene.loadGrass();
 
-        for(let i = 0; i < 5; i++) {
+        for(let i = 0; i < 15; i++) {
             scene.loadFlower();
         }
 
-        for(let i = 0; i < 2; i++) {
-            scene.loadDandelion();
+        for(let i = 0; i < 0; i++) {
+            //scene.loadDandelion();
         }
 
         Promise.all([bumblebeePromise, grassPromise])

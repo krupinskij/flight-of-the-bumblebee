@@ -41,6 +41,7 @@ class Scene {
     loadFlower() {
         const xPos = Math.random() * 80 - 40;
         const yPos = Math.random() * 80 - 40;
+        const zPos = Math.random() * 2 - 1;
 
         const colors = [[0.8, 0.0, 0.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 0.5, 1.0, 1.0], [1.0, 0.5, 0.2, 1.0], [0.5, 0.5, 1.0, 1.0]];
         const randomCol = Math.floor(Math.random() * 5)
@@ -51,7 +52,7 @@ class Scene {
             model.vertices = model.vertices.map((v, i) => {
                 if(i%3===0) return v + xPos;
                 else if(i%3===2) return v + yPos;
-                else return v;
+                else return v + zPos;
             });
             model.normals = utils.calculateNormals(model.vertices, model.indices);
             model.color = colors[randomCol];
@@ -65,7 +66,7 @@ class Scene {
             model.vertices = model.vertices.map((v, i) => {
                 if(i%3===0) return v + xPos;
                 else if(i%3===2) return v + yPos;
-                else return v;
+                else return v + zPos;
             });
             model.normals = utils.calculateNormals(model.vertices, model.indices);
             this.objects.push(model)
@@ -78,7 +79,7 @@ class Scene {
             model.vertices = model.vertices.map((v, i) => {
                 if(i%3===0) return v + xPos;
                 else if(i%3===2) return v + yPos;
-                else return v;
+                else return v + zPos;
             });
             model.normals = utils.calculateNormals(model.vertices, model.indices);
             this.objects.push(model)
