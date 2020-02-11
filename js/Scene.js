@@ -19,8 +19,19 @@ class Scene {
         const bellyPromise = scene.loadModel("model/bumblebee/belly.json");
         const leftEyePromise = scene.loadModel("model/bumblebee/left-eye.json");
         const rightEyePromise = scene.loadModel("model/bumblebee/right-eye.json");
+        const stripesPromise = scene.loadModel("model/bumblebee/stripes.json");
+        const stingPromise = scene.loadModel("model/bumblebee/sting.json");
+        const leftWingPromise = scene.loadModel("model/bumblebee/left-wing.json");
+        const rightWingPromise = scene.loadModel("model/bumblebee/right-wing.json");
 
-        return Promise.all([headPromise, bellyPromise, leftEyePromise, rightEyePromise]);
+        return Promise.all([
+            headPromise, 
+            bellyPromise, 
+            leftEyePromise, rightEyePromise, 
+            stripesPromise, 
+            stingPromise,
+            leftWingPromise, rightWingPromise
+        ]);
     }
 
     loadGrass() {

@@ -62,11 +62,11 @@ class Program {
     }
 
     initLights(){
-        this.gl.uniform3fv(this.prg.uLightDirection,  [10, 10, 10]);
+        this.gl.uniform3fv(this.prg.uLightDirection, [100, 1000, 100]);
         
-        this.gl.uniform4fv(this.prg.uMaterialAmbient, [1.0,1.0,1.0,1.0]);
-        this.gl.uniform4fv(this.prg.uMaterialSpecular,[1.0,1.0,1.0,1.0]);
-        this.gl.uniform1f(this.prg.uShininess, 100.0);
+        this.gl.uniform4f(this.prg.uMaterialAmbient, 0.0,0.0,0.0,1.0);
+        this.gl.uniform4f(this.prg.uMaterialSpecular, 1.0,1.0,1.0,1.0);
+        this.gl.uniform1f(this.prg.uShininess, 250.0);
     }
 
     draw() {
@@ -108,15 +108,14 @@ class Program {
                     mat4.rotateY(modelMatrix, bumblebee.angle);
 
                     if(model.partname==="belly") mat4.rotateZ(modelMatrix, bumblebee.bellyAngle);
+                    //if(model.partname==="left-wing") mat4.rotateZ(modelMatrix, bumblebee.wingAngle);
+                    //if(model.partname==="right-wing") mat4.rotateZ(modelMatrix, -bumblebee.wingAngle);
 
                     bumblebee.position = [modelMatrix[12], modelMatrix[13], modelMatrix[14]];
-                } else {
-                    mat4.translate(modelMatrix, [0,0,-1])
                 }
 
                 
                 this.gl.uniform4fv(this.prg.uMaterialDiffuse, model.color);
-                
 
                 switch(camera.type) {
                     case camera.CAMERA_FOLLOWING:
@@ -134,8 +133,8 @@ class Program {
                 this.gl.uniformMatrix4fv(this.prg.uViewMatrix, false, viewMatrix);
                 this.gl.uniformMatrix4fv(this.prg.uProjectionMatrix, false, projectionMatrix);
 
-                
-                mat4.set(viewMatrix, normalMatrix);
+                mat4.identity(normalMatrix);
+                //mat4.set(viewMatrix, normalMatrix);
                 mat4.multiply(normalMatrix, modelMatrix);
                 mat4.inverse(normalMatrix);
                 mat4.transpose(normalMatrix);
@@ -195,6 +194,8 @@ class Program {
     renderLoop() {
         program.animationFrame = requestAnimationFrame(program.renderLoop);
         bumblebee.bellyAngle += 0.05;
+        //bumblebee.wingAngle +=bumblebee.wingAngleStep;
+        //if(bumblebee.wingAngle>-0.1 || bumblebee.wingAngle<-0.4) bumblebee.wingAngleStep*=-1;
         program.draw();
     }
 }

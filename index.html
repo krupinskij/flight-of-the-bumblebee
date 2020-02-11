@@ -29,15 +29,18 @@
         #endif
         
         uniform float uShininess;        //shininess
-        uniform vec3 uLightDirection;  //light direction
+        uniform vec3 uLightDirection;
         
-        uniform vec4 uMaterialAmbient;  //object ambient property
-        uniform vec4 uMaterialDiffuse;   //object diffuse property
-        uniform vec4 uMaterialSpecular;  //object specular property
+        uniform vec4 uMaterialAmbient;
+        uniform vec4 uMaterialDiffuse;
+        uniform vec4 uMaterialSpecular;
         
         varying vec3 n;
         varying vec3 v;
         varying float f;
+
+        varying vec3 v_surfaceToLight;
+        varying vec3 v_surfaceToView;
 
         uniform float uFogNear;
         uniform float uFogFar;
@@ -57,12 +60,19 @@
             vec3 R = reflect(-L, N);
             vec3 H = normalize(L + V);
 
-            vec4 Ia = vec4(0.0, 0.0, 0.0, 1.0) * uMaterialAmbient;
-            vec4 Id = uMaterialDiffuse * max(dot(N, L), 0.0);
-            vec4 Is = vec4(0.0, 0.0, 0.0, 1.0);
+            float lambertTerm = dot(L, N);
 
-            if(uBlinnModel) Is = uMaterialSpecular * pow(max(dot(N, H), 0.0), uShininess);
-            else Is = uMaterialSpecular * pow(max(dot(R, V), 0.0), uShininess);
+            vec4 Ia = vec4(1.0, 1.0, 1.0, 1.0) * uMaterialAmbient;
+            vec4 Id = vec4(0.0,0.0,0.0,1.0);
+            vec4 Is = vec4(0.0,0.0,0.0,1.0);
+
+            if(lambertTerm > 0.0)
+            {
+                Id = uMaterialDiffuse * lambertTerm;
+                
+                if(uBlinnModel) Is = uMaterialSpecular * pow(max(dot(N, H), 0.0), uShininess);
+                else Is = uMaterialSpecular * pow(max(dot(R, V), 0.0), uShininess);
+            }
              
             finalColor = Ia + uLightness * Id + Is;
             finalColor.a = 1.0;
@@ -80,7 +90,10 @@
         uniform mat4 uViewMatrix;
         uniform mat4 uProjectionMatrix;
         uniform mat4 uNormalMatrix;
-        
+
+        uniform vec3 uLightWorldPosition;
+        uniform vec3 uViewWorldPosition;
+
         varying vec3 n;
         varying vec3 v;
         varying float f;
@@ -147,15 +160,19 @@
             vec3 R = reflect(-L, N);
             vec3 H = normalize(L + V);
 
+            float lambertTerm = dot(L, N);
+
             vec4 Ia = vec4(0.0, 0.0, 0.0, 1.0) * uMaterialAmbient;
-            vec4 Id = uMaterialDiffuse * max(dot(N, L), 0.0);
-            vec4 Is = vec4(0.0, 0.0, 0.0, 1.0);
+            vec4 Id = vec4(0.0,0.0,0.0,1.0);
+            vec4 Is = vec4(0.0,0.0,0.0,1.0);
 
-            if(uBlinnModel) Is = uMaterialSpecular * pow(max(dot(N, H), 0.0), uShininess);
-            else Is = uMaterialSpecular * pow(max(dot(R, V), 0.0), uShininess);
-
-            color = Ia + uLightness * Id + Is;
-            color.a = 1.0;
+            if(lambertTerm > 0.0)
+            {
+                Id = uMaterialDiffuse * lambertTerm;
+                
+                if(uBlinnModel) Is = uMaterialSpecular * pow(max(dot(N, H), 0.0), uShininess);
+                else Is = uMaterialSpecular * pow(max(dot(R, V), 0.0), uShininess);
+            }
 
             color = Ia + uLightness * Id + Is;
             color.a = 1.0;
