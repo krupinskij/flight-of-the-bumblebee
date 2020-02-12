@@ -35,7 +35,17 @@ class Scene {
     }
 
     loadGrass() {
-        return scene.loadModel("model/grass/grass.json");
+        return fetch("http://" + document.domain + ":" + location.port + "/model/grass/grass.json")
+        .then(resp => resp.json())
+        .then(model => {
+            model.vertices = model.vertices.map((v, i) => {
+                if(i%3===1) return v - 10.0;
+                else return v;
+            });
+            model.normals = utils.calculateNormals(model.vertices, model.indices);
+            this.objects.push(model)
+            console.info("Added: " + model.partname + " of " + model.alias)
+        })
     }
 
     loadFlower() {

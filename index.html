@@ -56,6 +56,13 @@
                 <input type="radio" name="shading-model" id="blinn-model">
                 <label for="blinn-model">Blinn model [X]</label>
             </section>
+
+            <hr class="panel__separator"/>
+
+            <section class="panel__section panel__section--vertically">
+                <label for="shading-shininess">Shininess: <span id="shading-shininess-value">200</span></label>
+                <input type="range" min="10" max="300" value="200" id="shading-shininess">
+            </section>
         </form>
     </div>
 
@@ -96,13 +103,18 @@
             </section>
 
             <section class="panel__section panel__section--vertically">
-                <label for="bumbebee-reflector-horizontally">Forward-backward</label>
+                <label for="bumbebee-reflector-vertically">Forward-backward: <span id="reflector-vertically-value">0</span></label>
                 <input type="range" min="-30" max="30" value="0" id="bumbebee-reflector-vertically">
             </section>
 
             <section class="panel__section panel__section--vertically">
-                <label for="bumbebee-reflector-vertically">Left-right</label>
+                <label for="bumbebee-reflector-horizontally">Left-right: <span id="reflector-horizontally-value">0</span></label>
                 <input type="range" min="-30" max="30" value="0" id="bumbebee-reflector-horizontally">
+            </section>
+
+            <section class="panel__section panel__section--vertically">
+                <label for="reflector-shininess">Reflector shininess: <span id="reflector-shininess-value">200</span></label>
+                <input type="range" min="10" max="300" value="200" id="reflector-shininess">
             </section>
 
             <hr class="panel__separator"/>
@@ -127,12 +139,12 @@
             </section>
 
             <section class="panel__section panel__section--vertically">
-                <label for="weather-fog-near">Fog near</label>
+                <label for="weather-fog-near">Fog near: <span id="fog-near-value">25</span></label>
                 <input type="range" min="0" max="100" value="25" id="weather-fog-near">
             </section>
 
             <section class="panel__section panel__section--vertically">
-                <label for="weather-fog-far">Fog far</label>
+                <label for="weather-fog-far">Fog far: <span id="fog-far-value">75</span></label>
                 <input type="range" min="0" max="100" value="75" id="weather-fog-far">
             </section>
 

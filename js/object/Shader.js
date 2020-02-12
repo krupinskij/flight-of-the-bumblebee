@@ -9,16 +9,18 @@ class Shader {
 
         this.shading = this.PHONG_SHADING;
         this.model = this.PHONG_MODEL;
+
+        this.shininess = 200;
     }
 
     getShading() {
-        if(this.shading === this.PHONG_SHADING) return ["phong-fragment-shader.frag", "phong-vertex-shader.vert"];
-        else if (this.shading === this.GOURAUD_SHADING) return ["gouraud-fragment-shader.frag", "gouraud-vertex-shader.vert"];
+        if(shader.shading === shader.PHONG_SHADING) return ["phong-fragment-shader.frag", "phong-vertex-shader.vert"];
+        else if (shader.shading === shader.GOURAUD_SHADING) return ["gouraud-fragment-shader.frag", "gouraud-vertex-shader.vert"];
         else throw Error("Incorrect shading");
     }
 
     setShading(shading) {
-        this.shading = shading;
+        shader.shading = shading;
         document.getElementById(shading).checked = true;
         console.info("Set shading to: " + shading);
         
@@ -26,15 +28,23 @@ class Shader {
     }
 
     isBlinnModel() {
-        if(this.model === this.BLINN_MODEL) return true;
-        else if (this.model === this.PHONG_MODEL) return false;
+        if(shader.model === shader.BLINN_MODEL) return true;
+        else if (shader.model === shader.PHONG_MODEL) return false;
         else throw Error("Incorrect model type");
     }
 
     setModel(model) {
-        this.model = model;
+        shader.model = model;
         document.getElementById(model).checked = true;
         console.info("Set model to: " + model);
+    }
+
+    getShininess() {
+        return shader.shininess;
+    }
+
+    setShiniess(shininess) {
+        shader.shininess = shininess;
     }
 }
 

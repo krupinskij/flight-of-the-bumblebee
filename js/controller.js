@@ -30,6 +30,14 @@ document.getElementById("blinn-model").addEventListener('change', event => {
     }
 })
 
+// SHADING SHININESS
+
+document.getElementById("shading-shininess").addEventListener('change', event => {
+    const shininess = +event.target.value;
+    shader.setShiniess(shininess);
+    document.getElementById("shading-shininess-value").innerText = shininess;
+})
+
 // CAMERA TYPES
 
 document.getElementById("following-camera").checked = true;
@@ -63,11 +71,23 @@ document.getElementById("bumbebee-reflector").addEventListener('change', event =
 })
 
 document.getElementById("bumbebee-reflector-vertically").addEventListener('change', event => {
-    bumblebee.reflectorX = +event.target.value;
+    const vert = +event.target.value;
+    bumblebee.reflectorX = vert;
+    document.getElementById("reflector-vertically-value").innerText = vert;
 })
 
 document.getElementById("bumbebee-reflector-horizontally").addEventListener('change', event => {
-    bumblebee.reflectorZ = +event.target.value;
+    const hor = +event.target.value;
+    bumblebee.reflectorZ = hor;
+    document.getElementById("reflector-horizontally-value").innerText = hor;
+})
+
+// REFLECTOR SHININESS
+
+document.getElementById("reflector-shininess").addEventListener('change', event => {
+    const shininess = +event.target.value;
+    bumblebee.setReflectorShiniess(shininess);
+    document.getElementById("reflector-shininess-value").innerText = shininess;
 })
 
 // BUMBLEBEE TURNING
@@ -91,11 +111,15 @@ document.getElementById("weather-fog").addEventListener('change', event => {
 })
 
 document.getElementById("weather-fog-near").addEventListener('change', event => {
-    weather.setFogNearDest(+event.target.value);
+    const near = +event.target.value
+    weather.setFogNearDest(near);
+    document.getElementById("fog-near-value").innerText = near;
 })
 
 document.getElementById("weather-fog-far").addEventListener('change', event => {
-    weather.setFogFarDest(+event.target.value);
+    const far = +event.target.value
+    weather.setFogFarDest(far);
+    document.getElementById("fog-far-value").innerText = far;
 })
 
 // WEATHER NIGHT
@@ -131,10 +155,10 @@ document.addEventListener('keydown', event => {
             shader.setShading(shader.GOURAUD_SHADING);
             break;
 
-        case 90: // key 'Z'
+        case 88: // key 'Z'
             shader.setModel(shader.BLINN_MODEL);
             break;
-        case 88: // key 'X'
+        case 90: // key 'X'
             shader.setModel(shader.PHONG_MODEL);
             break;
 

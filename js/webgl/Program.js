@@ -62,6 +62,7 @@ class Program {
         this.prg.uMaterialSpecular = this.gl.getUniformLocation(this.prg, "uMaterialSpecular");
         
         this.prg.uShininess = this.gl.getUniformLocation(this.prg, "uShininess");
+        this.prg.uReflectorShininess = this.gl.getUniformLocation(this.prg, "uReflectorShininess");
         
         this.prg.uLightDirection = this.gl.getUniformLocation(this.prg, "uLightDirection");
 
@@ -84,7 +85,6 @@ class Program {
         
         this.gl.uniform4f(this.prg.uMaterialAmbient, 0.0,0.0,0.0,1.0);
         this.gl.uniform4f(this.prg.uMaterialSpecular, 1.0,1.0,1.0,1.0);
-        this.gl.uniform1f(this.prg.uShininess, 250.0);
     }
 
     draw() {
@@ -98,10 +98,15 @@ class Program {
         this.gl.uniform1f(this.prg.uFogFar, weather.getFogFar());
         this.gl.uniform4fv(this.prg.uFogColor, weather.getFogColor());
         this.gl.uniform1f(this.prg.uLightness, weather.getLightness());
+
+        this.gl.uniform1f(this.prg.uShininess, shader.getShininess());
+        this.gl.uniform1f(this.prg.uReflectorShininess, bumblebee.getReflectorShininess());
         
         this.gl.uniform1i(this.prg.uBlinnModel, shader.isBlinnModel());
         this.gl.uniform1i(this.prg.uReflector, bumblebee.isReflector());
         this.gl.uniform1i(this.prg.uFog, weather.isEnabledFog());
+
+        console.log(shader.getShininess());
         
         
         try{

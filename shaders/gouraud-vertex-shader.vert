@@ -24,10 +24,10 @@ uniform vec4 uFogColor;
 uniform float uLightness;
 
 uniform bool uBlinnModel;
-
 uniform bool uReflector;
-
 uniform bool uFog;
+
+uniform float uReflectorShininess;
  
 void main(void) {
 
@@ -50,7 +50,7 @@ void main(void) {
 
     light = dot(N, SL);
     if (light > 0.0) {
-        if(dot(N, HV)>0.0) specular = pow(dot(N, HV), 150.0);
+        if(dot(N, HV)>0.0) specular = pow(dot(N, HV), uReflectorShininess);
     }
 
     float lambertTerm = dot(L, N);

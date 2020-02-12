@@ -13,6 +13,7 @@ class Bumblebee {
         this.reflector = false;
         this.reflectorX = 0;
         this.reflectorZ = 0;
+        this.reflectorShininess = 200.0;
 
         this.distance = 30;
         this.position = [0.0, 0.0, 0.0];
@@ -68,13 +69,21 @@ class Bumblebee {
     getSpotPostion() {
         return [
             bumblebee.position[0] - bumblebee.reflectorX * Math.sin(bumblebee.angle) + bumblebee.reflectorZ * Math.cos(-bumblebee.angle),
-            bumblebee.position[1],
+            bumblebee.position[1] + 10,
             bumblebee.position[2] - bumblebee.reflectorX * Math.cos(bumblebee.angle) + bumblebee.reflectorZ * Math.sin(-bumblebee.angle)
         ]
     }
 
     isReflector() {
         return bumblebee.reflector;
+    }
+
+    getReflectorShininess() {
+        return bumblebee.reflectorShininess;
+    }
+
+    setReflectorShiniess(shininess) {
+        bumblebee.reflectorShininess = shininess;
     }
 
     isTurning() {
