@@ -1,6 +1,6 @@
 class Utils {
 
-	getGLContext = function (id) {
+	getGLContext(id) {
 
 		var canvas = document.getElementById(id);
 		var context = null;
@@ -37,7 +37,7 @@ class Utils {
 	}
 
 
-	getShader = function (gl, filename, type) {
+	getShader(gl, filename, type) {
 
 		let shader;
 		if (type == "fragment-shader") {
@@ -64,7 +64,7 @@ class Utils {
 		})
 	}
 
-	calculateNormals = function(vs, ind) {
+	calculateNormals(vs, ind) {
 		let x = 0;
 		let y = 1;
 		let z = 2;

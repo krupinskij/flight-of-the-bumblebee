@@ -14,7 +14,7 @@ class Shader {
     }
 
     getShading() {
-        if(shader.shading === shader.PHONG_SHADING) return ["phong-fragment-shader.frag", "phong-vertex-shader.vert"];
+        if (shader.shading === shader.PHONG_SHADING) return ["phong-fragment-shader.frag", "phong-vertex-shader.vert"];
         else if (shader.shading === shader.GOURAUD_SHADING) return ["gouraud-fragment-shader.frag", "gouraud-vertex-shader.vert"];
         else throw Error("Incorrect shading");
     }
@@ -23,12 +23,12 @@ class Shader {
         shader.shading = shading;
         document.getElementById(shading).checked = true;
         console.info("Set shading to: " + shading);
-        
+
         program.changeShaders();
     }
 
     isBlinnModel() {
-        if(shader.model === shader.BLINN_MODEL) return true;
+        if (shader.model === shader.BLINN_MODEL) return true;
         else if (shader.model === shader.PHONG_MODEL) return false;
         else throw Error("Incorrect model type");
     }

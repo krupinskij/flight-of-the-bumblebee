@@ -55,7 +55,7 @@ class Bumblebee {
     }
 
     getAngle() { return bumblebee.angle; }
-    
+
     setAngle(angle) { bumblebee.angle = angle; }
 
     getPosition() {
@@ -100,7 +100,7 @@ class Bumblebee {
 
     setDistance(distance) {
         bumblebee.distance = distance;
-    } 
+    }
 }
 
 const bumblebee = new Bumblebee();

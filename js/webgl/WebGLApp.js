@@ -7,7 +7,7 @@ class WebGLApp {
         const bumblebeePromise = scene.loadBumblebee();
         const grassPromise = scene.loadGrass();
 
-        for(let i = 0; i < 15; i++) {
+        for(let i = 0; i < 10; i++) {
             scene.loadFlower();
         }
 

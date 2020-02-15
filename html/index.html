@@ -4,22 +4,22 @@
 <head>
     <title> Flight Of The Bumblebee </title>
 
-    <link rel="stylesheet" href="css/canvas.css">
-    <link rel="stylesheet" href="css/panel.css">
+    <link rel="stylesheet" href="../css/canvas.css">
+    <link rel="stylesheet" href="../css/panel.css">
 
     <link href="https://fonts.googleapis.com/css?family=Courier+Prime&display=swap" rel="stylesheet"> 
 
-    <script type='text/javascript' src='js/helpers/gl-matrix-min.js'></script>
-    <script type='text/javascript' src='js/helpers/canvas.js'></script>
+    <script type='text/javascript' src='../js/helpers/gl-matrix-min.js'></script>
+    <script type='text/javascript' src='../js/helpers/canvas.js'></script>
 
-    <script type='text/javascript' src='js/object/Bumblebee.js'></script>
-    <script type='text/javascript' src='js/object/Camera.js'></script>
-    <script type='text/javascript' src='js/object/Shader.js'></script>
-    <script type='text/javascript' src='js/object/Weather.js'></script>
+    <script type='text/javascript' src='../js/object/Bumblebee.js'></script>
+    <script type='text/javascript' src='../js/object/Camera.js'></script>
+    <script type='text/javascript' src='../js/object/Shader.js'></script>
+    <script type='text/javascript' src='../js/object/Weather.js'></script>
     
-    <script type='text/javascript' src='js/webgl/Utils.js'></script>
-    <script type='text/javascript' src='js/webgl/Scene.js'></script>
-    <script type='text/javascript' src='js/webgl/Program.js'></script>
+    <script type='text/javascript' src='../js/webgl/Utils.js'></script>
+    <script type='text/javascript' src='../js/webgl/Scene.js'></script>
+    <script type='text/javascript' src='../js/webgl/Program.js'></script>
 
 </head>
 
@@ -28,9 +28,33 @@
         Your browser does not support HTML5
     </canvas>
 
+    <div class="panel">
+        <h2 class="panel__header">
+            Camera [1]
+        </h2>
+
+        <form class="panel__form">
+
+            <section class="panel__section">
+                <input type="radio" name="camera" id="following-camera" checked>
+                <label for="following-camera">Following camera [Q]</label>
+            </section>
+
+            <section class="panel__section">
+                <input type="radio" name="camera" id="tracking-camera">
+                <label for="tracking-camera">Tracking camera [W]</label>
+            </section>
+
+            <section class="panel__section">
+                <input type="radio" name="camera" id="static-camera">
+                <label for="static-camera">Static camera [E]</label>
+            </section>
+        </form>
+    </div>
+
     <div class="panel panel">
         <h2 class="panel__header">
-            Shaders [1]
+            Shaders [2]
         </h2>
 
         <form class="panel__form">
@@ -68,30 +92,6 @@
 
     <div class="panel">
         <h2 class="panel__header">
-            Camera [2]
-        </h2>
-
-        <form class="panel__form">
-
-            <section class="panel__section">
-                <input type="radio" name="camera" id="following-camera" checked>
-                <label for="following-camera">Following camera [Q]</label>
-            </section>
-
-            <section class="panel__section">
-                <input type="radio" name="camera" id="tracking-camera">
-                <label for="tracking-camera">Tracking camera [W]</label>
-            </section>
-
-            <section class="panel__section">
-                <input type="radio" name="camera" id="static-camera">
-                <label for="static-camera">Static camera [E]</label>
-            </section>
-        </form>
-    </div>
-
-    <div class="panel">
-        <h2 class="panel__header">
             Bumblebee [3]
         </h2>
 
@@ -99,7 +99,7 @@
 
             <section class="panel__section">
                 <input type="checkbox" id="bumbebee-reflector">
-                <label for="bumbebee-reflector">Bumblebee reflector</label>
+                <label for="bumbebee-reflector">Reflector</label>
             </section>
 
             <section class="panel__section panel__section--vertically">
@@ -121,7 +121,7 @@
             
             <section class="panel__section">
                 <input type="checkbox" id="bumbebee-turning" checked>
-                <label for="bumbebee-turning">Bumblebee turning</label>
+                <label for="bumbebee-turning">Turning</label>
             </section>
         </form>
     </div>
@@ -157,9 +157,9 @@
         </form>
     </div>
 
-    <script type='text/javascript' src='js/webgl/WebGLApp.js'></script>
+    <script type='text/javascript' src='../js/webgl/WebGLApp.js'></script>
     
-    <script type='text/javascript' src='js/controller.js'></script>
+    <script type='text/javascript' src='../js/controller.js'></script>
 </body>
 
 </html>

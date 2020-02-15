@@ -49,8 +49,8 @@ class Scene {
     }
 
     loadFlower() {
-        const xPos = Math.random() * 80 - 40;
-        const yPos = Math.random() * 80 - 40;
+        const xPos = Math.random() * 60 - 30;
+        const yPos = Math.random() * 60 - 30;
         const zPos = Math.random() * 2 - 1;
 
         const colors = [[0.8, 0.0, 0.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 0.5, 1.0, 1.0], [1.0, 0.5, 0.2, 1.0], [0.5, 0.5, 1.0, 1.0]];
@@ -99,42 +99,7 @@ class Scene {
         return Promise.all([petalPromise, centerPromise, stemPromise]);
     }
 
-    loadDandelion() {
-        const xPos = Math.random() * 80 - 40;
-        const yPos = Math.random() * 80 - 40;
-
-        const centerPromise = fetch("http://" + document.domain + ":" + location.port + "/model/dandelion/center.json")
-        .then(resp => resp.json())
-        .then(model => {
-            model.vertices = model.vertices.map((v, i) => {
-                if(i%3===0) return v + xPos;
-                else if(i%3===2) return v + yPos;
-                else return v;
-            });
-            model.normals = utils.calculateNormals(model.vertices, model.indices);
-            this.objects.push(model)
-            console.info("Added: " + model.partname + " of " + model.alias)
-        })
-
-        const stemPromise = fetch("http://" + document.domain + ":" + location.port + "/model/dandelion/stem.json")
-        .then(resp => resp.json())
-        .then(model => {
-            model.vertices = model.vertices.map((v, i) => {
-                if(i%3===0) return v + xPos;
-                else if(i%3===2) return v + yPos;
-                else return v;
-            });
-            model.normals = utils.calculateNormals(model.vertices, model.indices);
-            this.objects.push(model)
-            console.info("Added: " + model.partname + " of " + model.alias)
-        })
-
-        return Promise.all([centerPromise, stemPromise]);
-    }
-
-    addLocalModel(model) {
-        this.objects.push(model);
-    }
+    
 }
 
 const scene = new Scene();
